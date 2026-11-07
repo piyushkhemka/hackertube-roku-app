@@ -1,0 +1,15 @@
+{
+  "name": "hackertube-roku",
+  "version": "0.0.1",
+  "description": "Roku SceneGraph playback feasibility prototype",
+  "scripts": {
+    "check": "bsc --project bsconfig.json",
+    "test": "npm run check && python3 -m unittest discover -s tests -v",
+    "build": "python3 tools/package.py"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "brighterscript": "0.73.8"
+  },
+  "private": true
+}

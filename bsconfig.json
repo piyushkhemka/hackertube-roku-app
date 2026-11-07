@@ -1,0 +1,6 @@
+{
+  "rootDir": "roku",
+  "files": ["source/**/*", "components/**/*", "manifest"],
+  "createPackage": false,
+  "copyToStaging": false
+}
