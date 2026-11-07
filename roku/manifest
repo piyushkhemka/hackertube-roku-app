@@ -1,6 +1,10 @@
-title=HackerTube Playback Spike
+title=HackerTube
 major_version=0
 minor_version=0
-build_version=1
+build_version=3
 ui_resolutions=hd
 sample_url=
+mm_icon_focus_hd=pkg:/images/channel-hd.png
+mm_icon_side_hd=pkg:/images/channel-hd.png
+mm_icon_focus_sd=pkg:/images/channel-sd.png
+mm_icon_side_sd=pkg:/images/channel-sd.png

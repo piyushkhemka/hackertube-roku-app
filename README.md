@@ -2,8 +2,10 @@
 
 This repository currently contains the **playback diagnostic milestone**, not the
 full HackerTube catalog browser. Authorized native YouTube playback is blocked;
-see [the feasibility report](docs/PLAYBACK_FEASIBILITY.md). No physical Roku was
-available for validation. Nothing has been published to GitHub.
+see [the feasibility report](docs/PLAYBACK_FEASIBILITY.md). The owner confirmed
+installation, the 12-second test video, Play/Pause and Back on a Roku TV. Build 3
+adds OK-button pause/resume and awaits a device retest. Audio and exact model/OS
+have not been confirmed. This repository is a prototype checkpoint.
 
 ## Build and check
 
@@ -47,7 +49,7 @@ requires the configured server. Stop the server with Ctrl-C when finished.
    and reboot as directed.
 3. On your Mac, visit `http://ROKU-IP`. Log in as `rokudev` with that password.
 4. Upload `dist/hackertube-roku-m0.zip` using the Development Application Installer.
-5. Press OK to start the diagnostic. Play/Pause pauses/resumes. Back stops it;
+5. Press OK to start the diagnostic. During playback, OK or Play/Pause pauses/resumes. Back stops it;
    Back again exits. Record results in the feasibility report.
 
 Only one sideloaded developer app is supported; installing replaces the previous
@@ -60,13 +62,14 @@ fails, use the password set on the Roku. If installation reports a manifest
 error, rebuild with the command above rather than zipping the parent folder.
 For playback errors check the Mac IP, running server and firewall. Inspect the
 Roku debug console on device port 8085 for `DIAGNOSTIC` state/error messages.
-These steps still need end-to-end device verification.
+Installation and basic video playback were confirmed by the owner; remaining
+device checks are tracked in docs/TEST_PLAN.md.
 
-## Scope and next decision
+## Scope
 
 The full planned product includes all videos, topics, search, details, favorites
-and Watch Later. Its implementation is pending acceptance of the phone-to-official-
-YouTube fallback. Neither a catalog entry nor a handoff proves a video is playable
+and Watch Later. The owner chose to stop after the playback prototype;
+full browser and phone-to-YouTube fallback development are not approved. Neither a catalog entry nor a handoff proves a video is playable
 or watched. No YouTube extraction, media proxy, API credentials, analytics or
 undocumented cross-app launch is included.
 

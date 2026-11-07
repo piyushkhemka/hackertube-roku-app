@@ -20,7 +20,8 @@ sub startDiagnostic()
     content.title = "Original diagnostic pattern - not YouTube"
     m.player.content = content
     m.player.visible = true
-    m.player.SetFocus(true)
+    ' Handle playback keys here so OK is not consumed by the Video node.
+    m.top.SetFocus(true)
     m.player.control = "play"
 end sub
 
@@ -48,7 +49,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
             m.player.control = "stop"
             returnToMenu("Diagnostic stopped. OK to retry; Back to exit.")
             return true
-        else if key = "play"
+        else if key = "play" or key = "OK"
             if m.player.state = "playing"
                 m.player.control = "pause"
             else if m.player.state = "paused"
@@ -56,6 +57,10 @@ function onKeyEvent(key as string, press as boolean) as boolean
             end if
             return true
         end if
+    end if
+    if key = "back"
+        m.top.exitRequested = true
+        return true
     end if
     return false
 end function

@@ -21,3 +21,11 @@ reachability, remote focus restoration, search over title/channel/summary/topics
 registry restart behavior and honest external-handoff/watch-history semantics.
 
 Release is no-go until physical installation and documentation are verified.
+
+Latest local bug review and fixes: [BUG_REVIEW.md](BUG_REVIEW.md). The suite now
+contains 9 package tests. The owner has confirmed installation, launch and the 12-second moving test
+pattern, Play/Pause and Back on their Roku TV (2026-11-07).
+Build 3 adds OK-button pause/resume and awaits a device retest. Audio, focus restoration,
+error recovery and exact device model/OS remain unverified. This is owner-reported
+evidence, not a test directly observed by the agent. Development remains scoped
+to the prototype at the owner’s request.
