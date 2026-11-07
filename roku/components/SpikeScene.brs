@@ -20,8 +20,8 @@ sub startDiagnostic()
     content.title = "Original diagnostic pattern - not YouTube"
     m.player.content = content
     m.player.visible = true
-    ' Handle playback keys here so OK is not consumed by the Video node.
-    m.top.SetFocus(true)
+    ' Native Video focus preserves Roku's seek bar and transport controls.
+    m.player.SetFocus(true)
     m.player.control = "play"
 end sub
 

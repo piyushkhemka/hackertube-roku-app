@@ -9,7 +9,7 @@
     <Label translation="[72,64]" width="1136" height="60" text="HackerTube / Playback diagnostic" />
     <Label translation="[72,154]" width="1100" height="160" wrap="true" text="Platform prototype only. This plays an original test pattern over your LAN. It does not play HackerTube or YouTube videos." />
     <Button id="play" translation="[72,350]" text="Run diagnostic clip" />
-    <Label id="status" translation="[72,460]" width="1100" height="120" wrap="true" text="OK: start test; during playback, OK or Play/Pause: pause or resume. Back: stop test / exit." />
+    <Label id="status" translation="[72,460]" width="1100" height="120" wrap="true" text="OK: start test; during playback, OK or Play/Pause: pause or resume. Left/Rewind or Right/Fast-forward: native seek controls. Back: stop / exit." />
     <Video id="player" width="1280" height="720" visible="false" />
   </children>
 </component>

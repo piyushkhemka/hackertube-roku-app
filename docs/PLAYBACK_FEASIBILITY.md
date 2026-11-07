@@ -47,8 +47,8 @@ to redistribute catalog videos. The agent did not directly observe the TV.
 | Audio | Not separately confirmed |
 | Play/Pause button | PASS — owner confirmed pause/resume |
 | Back button | PASS — owner confirmed Back works |
-| OK button | Owner reported no pause/resume in build 2; handler added in build 3, awaiting retest |
-| Seek | Not yet reported |
+| OK button | PASS — owner confirmed pause/resume in build 3 |
+| Seek | Owner reports first native-player build worked; build 3 regressed, build 4 flashed black. Build 5 restores native focus and seek controls; retest pending |
 | Missing server / retry | Not yet reported |
 | YouTube playback | NOT RUN; no authorized route |
 
@@ -57,7 +57,7 @@ hardware screenshots or performance measurements are available.
 
 ## Decision gate
 
-The basic physical-device video test passed by owner report; audio, OK-button retest,
+The basic physical-device video test passed by owner report; audio, seek retest,
 error recovery and device details remain unverified. Full native YouTube
 playback is no-go. Proposed alternative: full catalog browser with an explicitly
 labeled YouTube URL/QR handoff. The user opens official YouTube on a phone and

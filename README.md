@@ -3,8 +3,9 @@
 This repository currently contains the **playback diagnostic milestone**, not the
 full HackerTube catalog browser. Authorized native YouTube playback is blocked;
 see [the feasibility report](docs/PLAYBACK_FEASIBILITY.md). The owner confirmed
-installation, the 12-second test video, Play/Pause and Back on a Roku TV. Build 3
-adds OK-button pause/resume and awaits a device retest. Audio and exact model/OS
+installation, the 12-second test video, Play/Pause and Back on a Roku TV. The owner also confirmed OK-button pause/resume in build 3. Build 5
+restores native player focus and seek controls, with an OK pause/resume fallback;
+this combination awaits a device retest. Audio and exact model/OS
 have not been confirmed. This repository is a prototype checkpoint.
 
 ## Build and check
@@ -26,7 +27,7 @@ Builds with identical source and sample URL produce identical ZIP bytes.
 
 ```sh
 sh tools/make_diagnostic.sh
-python3 -m http.server 8080 --bind 0.0.0.0 --directory media
+python3 tools/serve_diagnostic.py --bind 0.0.0.0 --port 8080
 ```
 
 Keep that terminal running. Find your Mac's LAN IP in System Settings → Network.
@@ -49,7 +50,8 @@ requires the configured server. Stop the server with Ctrl-C when finished.
    and reboot as directed.
 3. On your Mac, visit `http://ROKU-IP`. Log in as `rokudev` with that password.
 4. Upload `dist/hackertube-roku-m0.zip` using the Development Application Installer.
-5. Press OK to start the diagnostic. During playback, OK or Play/Pause pauses/resumes. Back stops it;
+5. Press OK to start the diagnostic. During playback, OK or Play/Pause pauses/resumes. Left/Rewind and Right/Fast-forward use the native
+   player seek controls. Back stops it;
    Back again exits. Record results in the feasibility report.
 
 Only one sideloaded developer app is supported; installing replaces the previous
