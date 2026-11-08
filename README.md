@@ -28,9 +28,9 @@ Roku supports one sideloaded developer app at a time; installing this replaces a
 
 This version uses a bundled catalog snapshot and keyword search. It does not include accounts, personalized recommendations, saved lists, or automatic catalog updates.
 
-[![HackerTube running on Roku — click to watch the full demo with sound](media/hackertube-demo.gif)](https://github.com/piyushkhemka/hackertube-roku-app/blob/main/media/hackertube-demo.mp4)
+[![HackerTube running on Roku — click to download the full demo with sound](media/hackertube-demo.gif)](https://github.com/piyushkhemka/hackertube-roku-app/raw/refs/heads/main/media/hackertube-demo.mp4)
 
-[Watch the full demo with sound](https://github.com/piyushkhemka/hackertube-roku-app/blob/main/media/hackertube-demo.mp4).
+[Download the full demo with sound (MP4)](https://github.com/piyushkhemka/hackertube-roku-app/raw/refs/heads/main/media/hackertube-demo.mp4).
 
 ## Credits
 
