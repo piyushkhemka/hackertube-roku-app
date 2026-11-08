@@ -37,7 +37,7 @@ import xml.etree.ElementTree as ET
 
 root = Path(sys.argv[1])
 vendor = root / 'vendor/playlet'
-artifact = root / 'dist/hackertube-roku-catalog-build-4.zip'
+artifact = root / 'dist/build.zip'
 shutil.copyfile(vendor / 'dist/playlet-app.zip', artifact)
 with zipfile.ZipFile(artifact) as app:
     assert app.testzip() is None, 'App ZIP CRC failure'
@@ -73,7 +73,7 @@ with zipfile.ZipFile(artifact) as app:
             ET.fromstring(app.read(name))
 
 # Supply the exact corresponding derivative source, without dependencies/build output.
-source = root / 'dist/hackertube-roku-catalog-build-4-source.zip'
+source = root / 'dist/build-source.zip'
 excluded = {'.git', 'node_modules', 'build', 'dist', 'release', '__pycache__'}
 with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as archive:
     for path in sorted(vendor.rglob('*')):

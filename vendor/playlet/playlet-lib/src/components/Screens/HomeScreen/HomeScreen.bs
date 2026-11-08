@@ -390,7 +390,11 @@ function ActivateTool() as void
     else
         dialog = CreateObject("roSGNode", "Dialog")
         dialog.title = "About HackerTube"
-        dialog.message = "Videos curated by HackerTube and open-index/hacker-news (ODC-By-1.0)." + Chr(10) + "Catalog: " + m.dataInfo.count.ToStr() + " videos, export " + m.dataInfo.sourceVersion + "." + Chr(10) + "Playback based on Playlet (AGPL-3.0). No account needed."
+        dialog.message = "Videos curated by HackerTube, created by Andrej Karpathy." + Chr(10) + Chr(10)
+        dialog.message += "Roku app built by Piyush Khemka." + Chr(10) + Chr(10)
+        dialog.message += "Source code" + Chr(10) + "github.com/piyushkhemka/hackertube-roku-app" + Chr(10) + Chr(10)
+        dialog.message += "Playback powered by Playlet, created by iBicha and contributors. Licensed under GNU AGPL-3.0." + Chr(10) + Chr(10)
+        dialog.message += "Catalog data from HackerTube and open-index/hacker-news, licensed under ODC-By 1.0."
         dialog.buttons = ["Close"]
         dialog.observeField("buttonSelected", FuncName(OnAboutSelected))
         dialog.observeField("wasClosed", FuncName(OnDialogClosed))

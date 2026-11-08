@@ -8,11 +8,11 @@ This is an unofficial, open-source Roku app. No sign-in is needed to browse or w
 
 You need a Roku TV or Roku streaming device and a computer on the same local network.
 
-1. **Download the app.** Open [the latest GitHub Release](https://github.com/piyushkhemka/hackertube-roku-app/releases/latest) and download **`hackertube-roku-catalog-build-4.zip`**. Don't download the `-source.zip` or GitHub's automatically generated **Source code (zip)** file for installation.
+1. **Download the app.** Open [the latest GitHub Release](https://github.com/piyushkhemka/hackertube-roku-app/releases/latest) and download **`build.zip`**. This is the only file you need to install. GitHub's **Source code** archives are for developers.
 2. **Set up Roku Developer Mode.** On your Roku remote, press **Home** 3 times, **Up** 2 times, then **Right, Left, Right, Left, Right**.
 3. **Enable the installer.** Follow the instructions on the TV, accept the agreement, and create a developer password. Your Roku will restart. Write down the **URL/IP address shown on the TV** (for example, `http://192.168.1.100`).
 4. **Open that URL on your computer.** Sign in with username **`rokudev`** and the developer password you just set. Make sure the computer and Roku are on the same network.
-5. **Sideload HackerTube.** In the **Development Application Installer**, choose **Upload**, select `hackertube-roku-catalog-build-4.zip`, and click **Install**.
+5. **Sideload HackerTube.** In the **Development Application Installer**, choose **Upload**, select `build.zip`, and click **Install**.
 
 HackerTube should open on your TV and appear on your Roku home screen. To update it, repeat steps 1, 4, and 5 with a newer ZIP.
 
@@ -27,6 +27,8 @@ Roku supports one sideloaded developer app at a time; installing this replaces a
 - **Top recommended** is the default ranking. **Recently recommended on HN** uses the latest recommendation year, not the video's upload date. **Title A–Z** sorts alphabetically. Sorting preserves the selected topic and search.
 
 This version uses a bundled catalog snapshot and keyword search. It does not include accounts, personalized recommendations, saved lists, or automatic catalog updates.
+
+<video src="https://github.com/piyushkhemka/hackertube-roku-app/raw/refs/heads/main/media/hackertube-demo.mp4" controls="controls" width="800"></video>
 
 ## Credits
 
@@ -56,9 +58,9 @@ cd hackertube-roku-app
 bash tools/build_catalog_app.sh
 ```
 
-Upload `dist/hackertube-roku-catalog-build-4.zip` using the steps above. The build also produces `dist/hackertube-roku-catalog-build-4-source.zip` and SHA-256 checksum files. The installer ZIP has `manifest` at its root and includes the playback library.
+Upload `dist/build.zip` using the steps above. The build also produces `dist/build-source.zip` and SHA-256 checksum files. The installer ZIP has `manifest` at its root and includes the playback library.
 
-To reproduce a release, check out its tag before building. You can also extract the release's matching `-source.zip` and run the same build command from its root.
+To reproduce a release, check out its tag before building. You can also extract GitHub's **Source code (zip)** archive for that release and run the same build command from its root.
 
 The build checks compilation, XML, asset references, catalog integrity, and ZIP structure. Run Python tests with:
 
