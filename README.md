@@ -30,7 +30,7 @@ This version uses a bundled catalog snapshot and keyword search. It does not inc
 
 [![HackerTube running on Roku — click to download the full demo with sound](media/hackertube-demo.gif)](https://github.com/piyushkhemka/hackertube-roku-app/raw/refs/heads/main/media/hackertube-demo.mp4)
 
-[Download the full demo with sound (MP4)](https://github.com/piyushkhemka/hackertube-roku-app/raw/refs/heads/main/media/hackertube-demo.mp4).
+[Download the full demo with sound (MP4)](https://github.com/piyushkhemka/hackertube-roku-app/media/hackertube-demo.mp4).
 
 ## Credits
 
