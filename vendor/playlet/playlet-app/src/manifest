@@ -1,0 +1,40 @@
+title=HackerTube
+
+# Do not update version manually, it is auto updated from package.json
+major_version=0
+minor_version=2
+build_version=00002
+
+rsg_version=1.3
+
+ui_resolutions=hd
+uri_resolution_autosub=$$RES$$,480p,720p,1080p
+
+##   Channel Assets
+###  Main Menu Icons / Channel Poster Artwork
+#### Image sizes are FHD: 540x405px | HD: 290x218px | SD: 246x140px
+
+###  Splash Screen + Loading Screen Artwork
+#### Image sizes are FHD: 1920x1080px | HD: 1280x720px | SD: 720x480px
+
+splash_color=#101010
+splash_min_time=0
+
+confirm_partner_button=1
+
+supports_input_launch=1
+
+supports_voice_roinput=1
+supports_etc_seek=1
+supports_etc_next=1
+
+requires_widevine_drm=1
+requires_widevine_version=1.0
+
+playlet_lib_zip_embedded_url=pkg:/lib/playlet-lib.zip
+
+git_commit_sha=unknown
+
+bs_const=DEBUG=false;TEST_MODE=false;DEBUG_FALLBACK_TO_EMBEDDED=true
+mm_icon_focus_hd=pkg:/images/hackertube-hd.png
+mm_icon_focus_sd=pkg:/images/hackertube-sd.png

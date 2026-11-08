@@ -1,0 +1,329 @@
+import "pkg:/source/utils/FocusManagement.bs"
+import "pkg:/source/utils/StringUtils.bs"
+import "pkg:/source/utils/Types.bs"
+
+function Init() as void
+    m.top.focusable = true
+    m.grid = m.top.findNode("grid")
+    m.status = m.top.findNode("status")
+    m.empty = m.top.findNode("empty")
+    m.picker = m.top.findNode("picker")
+    m.task = m.top.findNode("catalogTask")
+    m.taxonomy = StringUtils.ParseJsonSafe(ReadAsciiFile("libpkg:/config/hackertube-taxonomy.json"))
+    m.dataInfo = StringUtils.ParseJsonSafe(ReadAsciiFile("libpkg:/config/hackertube-data-info.json"))
+    m.query = ""
+    m.area = ""
+    m.category = ""
+    m.topicName = "All topics"
+    m.sort = "recommended"
+    m.page = 0
+    m.pages = 1
+    m.serial = 0
+    m.pending = invalid
+    m.toolIndex = 0
+    m.focusArea = "toolbar"
+    m.pickerMode = ""
+    m.loaded = false
+    labels = ["Search", "Topics", "Sort", "Previous", "Next", "About"]
+    for i = 0 to labels.Count() - 1
+        m.top.findNode("tool" + i.ToStr()).text = labels[i]
+    end for
+    m.grid.observeField("itemSelected", FuncName(OnVideoSelected))
+    m.picker.observeField("itemSelected", FuncName(OnPickerSelected))
+    m.task.observeField("result", FuncName(OnCatalogResult))
+    m.task.observeField("state", FuncName(OnTaskState))
+end function
+
+function OnNodeReady() as void
+    RequestPage()
+end function
+
+function OnFocusChange() as void
+    if not m.top.focus
+        return
+    end if
+    if m.focusArea = "grid" and m.loaded
+        NodeSetFocus(m.grid, true)
+    else
+        FocusToolbar()
+    end if
+end function
+
+function FocusToolbar() as void
+    m.focusArea = "toolbar"
+    m.top.findNode("toolFocus").visible = true
+    m.top.findNode("toolFocus").translation = [m.toolIndex * 192, 0]
+    ' bs:disable-next-line NO_SET_FOCUS
+    m.top.SetFocus(true)
+end function
+
+function FocusGrid() as void
+    if not m.loaded
+        FocusToolbar()
+        return
+    end if
+    m.focusArea = "grid"
+    m.top.findNode("toolFocus").visible = false
+    NodeSetFocus(m.grid, true)
+end function
+
+function RequestPage() as void
+    m.serial += 1
+    m.pending = { serial: m.serial, query: m.query, area: m.area, category: m.category, sort: m.sort, page: m.page }
+    m.loaded = false
+    m.grid.visible = false
+    m.empty.visible = false
+    m.status.text = "Loading videos..."
+    StartPendingRequest()
+end function
+
+function StartPendingRequest() as void
+    if m.pending = invalid or m.task.state = "run"
+        return
+    end if
+    m.task.request = m.pending
+    m.pending = invalid
+    m.task.control = "run"
+end function
+
+function OnTaskState() as void
+    if m.task.state = "stop"
+        StartPendingRequest()
+    end if
+end function
+
+function OnCatalogResult() as void
+    result = m.task.result
+    if result = invalid or result.serial <> m.serial
+        return
+    end if
+    if result.error <> invalid
+        m.empty.text = result.error
+        m.empty.visible = true
+        m.grid.visible = false
+        m.loaded = false
+        m.status.text = "Catalog unavailable"
+        FocusToolbar()
+        return
+    end if
+    m.page = result.page
+    m.pages = result.pages
+    content = CreateObject("roSGNode", "ContentNode")
+    for each item in result.items
+        node = content.createChild("VideoContentNode")
+        node.videoId = item.id
+        node.title = item.title
+        node.secondaryTitle = item.channel
+        node._author = item.channel
+        node.hdPosterUrl = "https://i.ytimg.com/vi/" + item.id + "/mqdefault.jpg"
+    end for
+    m.grid.content = content
+    m.grid.jumpToItem = 0
+    m.loaded = content.getChildCount() > 0
+    m.grid.visible = m.loaded and m.pickerMode = ""
+    m.empty.visible = not m.loaded and m.pickerMode = ""
+    m.empty.text = "No videos match. Try another search or topic."
+    m.top.findNode("count").text = result.total.ToStr() + " videos  |  Page " + (m.page + 1).ToStr() + " / " + m.pages.ToStr() + "  |  Back: menu"
+    UpdateStatus()
+    if m.focusArea = "grid" and m.pickerMode = "" and m.top.getScene().dialog = invalid and m.videoQueue.player = invalid
+        FocusGrid()
+    end if
+end function
+
+function UpdateStatus() as void
+    sortName = "Top recommended"
+    if m.sort = "recent"
+        sortName = "Recently recommended on HN"
+    else if m.sort = "az"
+        sortName = "Title A-Z"
+    end if
+    title = m.topicName + "  /  " + sortName
+    if m.query <> ""
+        title += "  /  Search: " + m.query
+    end if
+    m.status.text = title
+end function
+
+function OnVideoSelected() as void
+    if not m.loaded
+        return
+    end if
+    node = m.grid.content.getChild(m.grid.itemSelected)
+    if node = invalid
+        return
+    end if
+    m.focusArea = "grid"
+    m.videoQueue.clearQueue = true
+    m.videoQueue.playVideo = node
+end function
+
+function OpenSearch() as void
+    dialog = CreateObject("roSGNode", "KeyboardDialog")
+    dialog.title = "Search HackerTube"
+    dialog.text = m.query
+    dialog.buttons = ["Search", "Clear search", "Cancel"]
+    dialog.observeField("buttonSelected", FuncName(OnSearchSelected))
+    dialog.observeField("wasClosed", FuncName(OnDialogClosed))
+    m.searchDialog = dialog
+    m.top.getScene().dialog = dialog
+end function
+
+function OnSearchSelected() as void
+    index = m.searchDialog.buttonSelected
+    if index = 0
+        m.query = m.searchDialog.text.Trim()
+    else if index = 1
+        m.query = ""
+    end if
+    m.searchDialog.close = true
+    if index < 2
+        m.page = 0
+        RequestPage()
+    end if
+end function
+
+function OnDialogClosed() as void
+    FocusToolbar()
+end function
+
+function ShowPicker(mode as string, entries as object, title as string) as void
+    m.pickerMode = mode
+    m.pickerEntries = entries
+    content = CreateObject("roSGNode", "ContentNode")
+    for each entry in entries
+        item = content.createChild("ContentNode")
+        item.title = entry.name
+    end for
+    m.picker.content = content
+    m.picker.jumpToItem = 0
+    m.grid.visible = false
+    m.empty.visible = false
+    m.picker.visible = true
+    m.top.findNode("pickerBackground").visible = true
+    m.top.findNode("toolFocus").visible = false
+    m.status.text = title + "  /  Back to cancel"
+    NodeSetFocus(m.picker, true)
+end function
+
+function OpenTopics() as void
+    entries = [{ id: "", name: "All topics" }]
+    for each area in m.taxonomy.areas
+        entries.Push({ id: area.id, name: area.name, categories: area.categories })
+    end for
+    ShowPicker("areas", entries, "Choose a topic")
+end function
+
+function ClosePicker() as void
+    m.pickerMode = ""
+    m.picker.visible = false
+    m.top.findNode("pickerBackground").visible = false
+    m.grid.visible = m.loaded
+    m.empty.visible = not m.loaded
+    UpdateStatus()
+    FocusToolbar()
+end function
+
+function OnPickerSelected() as void
+    choice = m.pickerEntries[m.picker.itemSelected]
+    if choice = invalid
+        return
+    end if
+    if m.pickerMode = "areas" and choice.id <> ""
+        m.pickedArea = choice
+        entries = [{ id: "", name: "All in " + choice.name }]
+        for each category in choice.categories
+            entries.Push({ id: category.id, name: category.name })
+        end for
+        ShowPicker("categories", entries, choice.name)
+        return
+    end if
+    if m.pickerMode = "sort"
+        m.sort = choice.id
+    else if m.pickerMode = "areas"
+        m.area = ""
+        m.category = ""
+        m.topicName = "All topics"
+    else
+        m.area = m.pickedArea.id
+        m.category = choice.id
+        m.topicName = choice.name
+    end if
+    m.page = 0
+    ClosePicker()
+    RequestPage()
+end function
+
+function ActivateTool() as void
+    if m.toolIndex = 0
+        OpenSearch()
+    else if m.toolIndex = 1
+        OpenTopics()
+    else if m.toolIndex = 2
+        ShowPicker("sort", [{ id: "recommended", name: "Top recommended" }, { id: "recent", name: "Recently recommended on HN" }, { id: "az", name: "Title A-Z" }], "Sort videos")
+    else if m.toolIndex = 3
+        if m.page > 0
+            m.page -= 1
+            RequestPage()
+        end if
+    else if m.toolIndex = 4
+        if m.page + 1 < m.pages
+            m.page += 1
+            RequestPage()
+        end if
+    else
+        dialog = CreateObject("roSGNode", "Dialog")
+        dialog.title = "About HackerTube"
+        dialog.message = "Videos curated by HackerTube and open-index/hacker-news (ODC-By-1.0)." + Chr(10) + "Catalog: " + m.dataInfo.count.ToStr() + " videos, export " + m.dataInfo.sourceVersion + "." + Chr(10) + "Playback based on Playlet (AGPL-3.0). No account needed."
+        dialog.buttons = ["Close"]
+        dialog.observeField("buttonSelected", FuncName(OnAboutSelected))
+        dialog.observeField("wasClosed", FuncName(OnDialogClosed))
+        m.aboutDialog = dialog
+        m.top.getScene().dialog = dialog
+    end if
+end function
+
+function OnAboutSelected() as void
+    m.aboutDialog.close = true
+end function
+
+function OnKeyEvent(key as string, press as boolean) as boolean
+    if not press
+        return false
+    end if
+    if m.pickerMode <> ""
+        if key = "back"
+            ClosePicker()
+            return true
+        end if
+        return false
+    end if
+    if m.focusArea = "toolbar"
+        if key = "left" or key = "right"
+            if key = "left"
+                m.toolIndex = (m.toolIndex + 5) mod 6
+            else
+                m.toolIndex = (m.toolIndex + 1) mod 6
+            end if
+            FocusToolbar()
+            return true
+        else if key = "down"
+            FocusGrid()
+            return true
+        else if key = "OK"
+            ActivateTool()
+            return true
+        end if
+    else
+        if key = "up" or key = "back"
+            FocusToolbar()
+            return true
+        else if key = "left" or key = "right"
+            return true
+        end if
+    end if
+    if key = "options"
+        OpenSearch()
+        return true
+    end if
+    return false
+end function

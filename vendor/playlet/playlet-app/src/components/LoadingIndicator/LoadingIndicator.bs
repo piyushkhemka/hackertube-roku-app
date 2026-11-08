@@ -1,0 +1,3 @@
+function Init() as void
+    m.top.findNode("brand").text = "HackerTube"
+end function

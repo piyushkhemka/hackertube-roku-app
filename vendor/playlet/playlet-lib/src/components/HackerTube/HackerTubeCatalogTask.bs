@@ -1,0 +1,79 @@
+import "pkg:/source/utils/StringUtils.bs"
+import "pkg:/source/utils/Types.bs"
+
+function Init() as void
+    m.top.functionName = "LoadPage"
+end function
+
+function LoadPage() as void
+    request = m.top.request
+    if m.catalog = invalid
+        m.catalog = StringUtils.ParseJsonSafe(ReadAsciiFile("libpkg:/config/hackertube-catalog.json"))
+    end if
+    if not IsAssociativeArray(m.catalog) or not IsArray(m.catalog.videos)
+        m.top.result = { serial: request.serial, error: "The catalog could not be loaded. Please reinstall HackerTube." }
+        return
+    end if
+    order = m.catalog.orders[request.sort]
+    if not IsArray(order)
+        order = m.catalog.orders.recommended
+    end if
+    tokens = LCase(request.query.Trim()).Tokenize(" ")
+    matches = []
+    for each idx in order
+        video = m.catalog.videos[idx]
+        include = true
+        if request.area <> ""
+            include = ContainsValue(video.areas, request.area)
+        end if
+        if include and request.category <> ""
+            include = ContainsValue(video.categories, request.category)
+        end if
+        if include
+            for each token in tokens
+                if video.search.Instr(token) < 0
+                    include = false
+                    exit for
+                end if
+            end for
+        end if
+        if include
+            matches.Push(idx)
+        end if
+    end for
+    pageSize = 24
+    total = matches.Count()
+    pages = Int((total + pageSize - 1) / pageSize)
+    if pages < 1
+        pages = 1
+    end if
+    page = request.page
+    if page >= pages
+        page = pages - 1
+    end if
+    if page < 0
+        page = 0
+    end if
+    items = []
+    start = page * pageSize
+    finish = start + pageSize - 1
+    if finish >= total
+        finish = total - 1
+    end if
+    if start <= finish
+        for i = start to finish
+            v = m.catalog.videos[matches[i]]
+            items.Push({ id: v.id, title: v.title, channel: v.channel, recommenders: v.recommenders })
+        end for
+    end if
+    m.top.result = { serial: request.serial, page: page, pages: pages, total: total, items: items }
+end function
+
+function ContainsValue(values as object, value as string) as boolean
+    for each item in values
+        if item = value
+            return true
+        end if
+    end for
+    return false
+end function

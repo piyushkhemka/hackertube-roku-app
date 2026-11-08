@@ -1,10 +1,30 @@
 # Playback feasibility — 2026-11-07
 
-**Diagnostic MP4 playback: confirmed by owner on Roku, 2026-11-07.**
-**Native arbitrary YouTube playback: BLOCKED; no authorized route verified.**
+**Latest result:** The owner confirmed YouTube playback and transport controls in
+the Playlet-derived HackerTube milestone. The [full catalog build](CATALOG_BUILD_2.md)
+now uses that working player. Earlier no-go statements below describe the prior
+official-integration investigation, not the status of the unofficial derivative.
+
+**Updated scope:** The [Playlet investigation](PLAYLET_INVESTIGATION.md) identifies
+a concrete unofficial native playback architecture suitable for a HackerTube
+prototype. Official integration remains unverified; Playlet-based playback on
+the owner's device is not yet tested. The earlier no-go below concerned official
+integration and does not rule out this newly requested approach.
+
+See the [focused YouTube integration investigation](YOUTUBE_INTEGRATION_INVESTIGATION.md)
+for the latest decision, Cobalt findings, source-access limitations and vendor
+questions. Its official-integration conclusion is qualified by the Playlet
+follow-up above.
+
+**Historical diagnostic result: MP4 playback confirmed by owner, 2026-11-07.**
+**Historical official-integration finding: no supported route verified.**
 No documented, authorized mechanism has been established for this independent
 BrightScript/SceneGraph app. This is an evidence-limited conclusion, not a claim
 that private platform partnerships cannot exist.
+
+These initial findings predate the Playlet source investigation and successful
+owner playback confirmation. They apply to official integration research; they
+do not describe the current HackerTube derivative's technical playback status.
 
 ## Evidence reviewed
 
@@ -55,17 +75,12 @@ to redistribute catalog videos. The agent did not directly observe the TV.
 Capture actual values, date, console errors and results here after testing. No
 hardware screenshots or performance measurements are available.
 
-## Decision gate
+## Historical decision gate (superseded)
 
-The basic physical-device video test passed by owner report; audio, seek retest,
-error recovery and device details remain unverified. Full native YouTube
-playback is no-go. Proposed alternative: full catalog browser with an explicitly
-labeled YouTube URL/QR handoff. The user opens official YouTube on a phone and
-uses its supported TV linking/casting when available; this is not an automatic
-Roku app launch. No watch history can be inferred from showing the link.
-
-The owner chose to stop after the playback prototype. The proposed fallback is
-not approved for implementation. No importer or full UI has been implemented.
+At the time of the original report, only diagnostic MP4 playback had been
+confirmed. The proposed URL/QR handoff was not selected. Subsequent work adopted
+Playlet's native playback approach; the owner confirmed real YouTube video
+playback before the full catalog UI was built. See [catalog build 2](CATALOG_BUILD_2.md).
 
 ## Local validation result
 

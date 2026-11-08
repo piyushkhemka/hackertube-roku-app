@@ -1,0 +1,6 @@
+<component name="HackerTubeCatalogTask" extends="Task">
+    <interface>
+        <field id="request" type="assocarray" />
+        <field id="result" type="assocarray" alwaysNotify="true" />
+    </interface>
+</component>

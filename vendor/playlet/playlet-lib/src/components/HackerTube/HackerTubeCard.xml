@@ -1,0 +1,15 @@
+<component name="HackerTubeCard" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="OnContent" />
+        <field id="focusPercent" type="float" onChange="OnFocus" />
+    </interface>
+    <children>
+        <Rectangle id="border" width="270" height="251" color="#333333" />
+        <Rectangle translation="[3,3]" width="264" height="245" color="#181818" />
+        <Poster id="thumbnail" translation="[5,5]" width="260" height="146" loadWidth="260" loadHeight="146" loadDisplayMode="scaleToFill" />
+        <Label id="title" translation="[12,160]" width="246" height="49" wrap="true" numLines="2" font="font:SmallBoldSystemFont" />
+        <Label id="channel" translation="[12,222]" width="246" height="23" color="#AAAAAA">
+            <Font role="font" uri="font:SystemFontFile" size="18" />
+        </Label>
+    </children>
+</component>

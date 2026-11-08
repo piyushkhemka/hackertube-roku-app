@@ -1,0 +1,11 @@
+<component name="LoadingIndicator" extends="Group">
+    <interface>
+        <field id="message" type="string" alias="messageLabel.text" />
+    </interface>
+    <children>
+        <Rectangle width="1280" height="720" color="#101010" />
+        <Poster translation="[472,170]" width="336" height="210" uri="pkg:/images/hackertube-hd.png" />
+        <Label id="brand" translation="[0,390]" width="1280" height="65" horizAlign="center" font="font:LargeBoldSystemFont" />
+        <Label id="messageLabel" translation="[0,470]" width="1280" height="70" horizAlign="center" color="#BBBBBB" font="font:SmallSystemFont" />
+    </children>
+</component>

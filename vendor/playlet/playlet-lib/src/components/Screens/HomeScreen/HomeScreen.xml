@@ -1,0 +1,26 @@
+<component name="HomeScreen" extends="Group" includes="AutoBind,Focus">
+    <interface>
+        <field id="videoQueue" type="node" bind="/VideoQueue" />
+    </interface>
+    <children>
+        <Rectangle width="1280" height="720" color="#101010" />
+        <Poster translation="[46,12]" width="96" height="60" uri="pkg:/images/hackertube-hd.png" />
+        <Label translation="[143,18]" text="HackerTube" width="420" height="52" font="font:LargeBoldSystemFont" />
+        <Label id="count" translation="[670,28]" width="540" height="34" horizAlign="right" color="#AAAAAA" font="font:SmallSystemFont" />
+        <Group id="toolbar" translation="[60,82]">
+            <Rectangle id="toolFocus" width="176" height="42" color="#FF6600" />
+            <Label id="tool0" width="176" height="42" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" />
+            <Label id="tool1" translation="[192,0]" width="176" height="42" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" />
+            <Label id="tool2" translation="[384,0]" width="176" height="42" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" />
+            <Label id="tool3" translation="[576,0]" width="176" height="42" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" />
+            <Label id="tool4" translation="[768,0]" width="176" height="42" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" />
+            <Label id="tool5" translation="[960,0]" width="176" height="42" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" />
+        </Group>
+        <Label id="status" translation="[62,135]" width="1156" height="35" color="#BBBBBB" font="font:SmallSystemFont" />
+        <MarkupGrid id="grid" translation="[60,177]" itemComponentName="HackerTubeCard" numColumns="4" numRows="2" itemSize="[270,251]" itemSpacing="[20,14]" drawFocusFeedback="false" vertFocusAnimationStyle="fixedFocus" />
+        <Label id="empty" translation="[100,280]" width="1080" height="120" wrap="true" horizAlign="center" visible="false" />
+        <Rectangle id="pickerBackground" translation="[50,170]" width="1180" height="525" color="#181818" visible="false" />
+        <LabelList id="picker" translation="[75,180]" itemSize="[1100,48]" numRows="10" visible="false" />
+        <HackerTubeCatalogTask id="catalogTask" />
+    </children>
+</component>

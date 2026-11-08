@@ -1,0 +1,56 @@
+import "pkg:/components/Web/PlayletWebServer/Middleware/BookmarksRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/CacheRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/DashRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/DialRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/HlsRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/HomeLayoutRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/HomeRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/InnertubeRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/InvidiousRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/PlayletInvidiousBackendRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/PlayletLibUrlsRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/PreferencesRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/ProfilesRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/RegistryRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/SearchHistoryRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/StateApiRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/VideoQueueRouter.bs"
+import "pkg:/components/Web/PlayletWebServer/Middleware/ViewRouter.bs"
+import "pkg:/components/Web/WebServer/Middleware/CorsMiddleware.bs"
+import "pkg:/components/Web/WebServer/Middleware/CsrfMiddleware.bs"
+import "pkg:/components/Web/WebServer/Middleware/EtagMiddleware.bs"
+import "pkg:/components/Web/WebServer/Middleware/HttpStaticFilesRouter.bs"
+import "pkg:/components/Web/WebServer/WebSockets/WebSocketMiddleware.bs"
+
+function Init()
+end function
+
+function OnNodeReady()
+    m.sceneNodes = {
+        "appController": m.top.appController
+        "preferences": m.top.preferences
+        "innertube": m.top.innertube
+        "invidious": m.top.invidious
+        "profilesService": m.top.profilesService
+        "applicationInfo": m.top.applicationInfo
+        "videoQueue": m.top.videoQueue
+        "bookmarksService": m.top.bookmarksService
+        "loungeService": m.top.loungeService
+        "jobQueue": m.top.jobQueue
+    }
+end function
+
+function GetServerAddress(_unused as dynamic) as dynamic
+    port = m.top.port
+    ip = m.top.applicationInfo@.GetLocalIpAddress()
+    if StringUtils.IsNullOrEmpty(ip)
+        return invalid
+    end if
+    return `http://${ip}:${port}`
+end function
+
+function SetupRoutes(server as object)
+    server.sceneNodes = m.sceneNodes
+    server.UseRouter(new Http.DashRouter(server))
+    server.UseRouter(new Http.HlsRouter(server))
+end function

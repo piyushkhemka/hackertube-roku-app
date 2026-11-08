@@ -4,3 +4,8 @@ dist/
 node_modules/
 __pycache__/
 .DS_Store
+
+# Local Playlet-derived build outputs
+vendor/playlet/build/
+vendor/playlet/release/
+vendor/playlet/playlet-app/src/lib/playlet-lib.zip

@@ -1,7 +1,19 @@
-# HackerTube for Roku — M0 playback spike
+# HackerTube for Roku
 
-This repository currently contains the **playback diagnostic milestone**, not the
-full HackerTube catalog browser. Authorized native YouTube playback is blocked;
+The latest app browses and plays the **6,454-video HackerTube catalog** with a
+native thumbnail grid, search, topic filters and sorting. No account is needed.
+See [installation, controls and validation](docs/CATALOG_BUILD_2.md).
+Build it with Node 22 using `bash tools/build_catalog_app.sh`; install
+`dist/hackertube-roku-catalog-build-2.zip`. The owner confirmed real-video playback
+and transport controls in the preceding two-video milestone; this new catalog
+UI awaits a TV test. The bundled catalog is the 2026-10-31 export snapshot.
+The `vendor/playlet/` derivative retains Playlet's AGPL-3.0 license separately
+from the original MIT diagnostic prototype below.
+
+## Original diagnostic prototype
+
+The original `roku/` app contains the **playback diagnostic milestone**, not the
+full HackerTube catalog browser. Official YouTube integration remains unverified;
 see [the feasibility report](docs/PLAYBACK_FEASIBILITY.md). The owner confirmed
 installation, the 12-second test video, Play/Pause and Back on a Roku TV. The owner also confirmed OK-button pause/resume in build 3. Build 5
 restores native player focus and seek controls, with an OK pause/resume fallback;
