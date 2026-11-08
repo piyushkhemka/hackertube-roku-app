@@ -43,6 +43,28 @@ sub Main()
     LoadPage()
     check(m.top.result.total = 6454, "entire exported catalog is reachable")
     check(m.top.result.pages = 269, "full catalog pagination")
+    for each sort in ["recommended", "recent", "az"]
+        m.top.request.sort = sort
+        LoadPage()
+        for i = 0 to m.top.result.items.Count() - 1
+            expected = m.catalog.videos[m.catalog.orders[sort][i]]
+            check(m.top.result.items[i].id = expected.id, "full catalog follows " + sort + " order")
+        end for
+    end for
+    m.top.request.area = "software"
+    m.top.request.category = "functional-programming"
+    m.top.request.sort = "recommended"
+    LoadPage()
+    check(m.top.result.total > 0 and m.top.result.total < 6454, "real topic reduces catalog")
+    for each item in m.top.result.items
+        for each video in m.catalog.videos
+            if video.id = item.id
+                check(ContainsValue(video.areas, "software") and ContainsValue(video.categories, "functional-programming"), "every result belongs to selected topic")
+            end if
+        end for
+    end for
+    m.top.request.area = ""
+    m.top.request.category = ""
     m.top.request.query = "vectors 3blue1brown"
     LoadPage()
     found = false

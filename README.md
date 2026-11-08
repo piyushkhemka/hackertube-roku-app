@@ -1,92 +1,69 @@
 # HackerTube for Roku
 
-The latest app browses and plays the **6,454-video HackerTube catalog** with a
-native thumbnail grid, search, topic filters and sorting. No account is needed.
-See [installation, controls and validation](docs/CATALOG_BUILD_2.md).
-Build it with Node 22 using `bash tools/build_catalog_app.sh`; install
-`dist/hackertube-roku-catalog-build-2.zip`. The owner confirmed real-video playback
-and transport controls in the preceding two-video milestone; this new catalog
-UI awaits a TV test. The bundled catalog is the 2026-10-31 export snapshot.
-The `vendor/playlet/` derivative retains Playlet's AGPL-3.0 license separately
-from the original MIT diagnostic prototype below.
+Watch the videos from [HackerTube](https://hackertube.org/) on your Roku TV. Browse the Hacker News-curated collection by topic, search for something interesting, and play it with your remote.
 
-## Original diagnostic prototype
+This is an unofficial, open-source Roku app. No sign-in is needed to browse or watch. The current release includes 6,454 videos from HackerTube's October 31, 2026 catalog snapshot. Launch, playback, browsing, topic filtering, and sorting have been tested by the owner on a Roku TV.
 
-The original `roku/` app contains the **playback diagnostic milestone**, not the
-full HackerTube catalog browser. Official YouTube integration remains unverified;
-see [the feasibility report](docs/PLAYBACK_FEASIBILITY.md). The owner confirmed
-installation, the 12-second test video, Play/Pause and Back on a Roku TV. The owner also confirmed OK-button pause/resume in build 3. Build 5
-restores native player focus and seek controls, with an OK pause/resume fallback;
-this combination awaits a device retest. Audio and exact model/OS
-have not been confirmed. This repository is a prototype checkpoint.
+## Install on your Roku TV
 
-## Build and check
+You need a Roku TV or Roku streaming device and a computer on the same local network.
 
-Requirements: Python 3.10+, Node.js/npm; ffmpeg for the diagnostic media.
+1. **Download the app.** Open [the latest GitHub Release](https://github.com/piyushkhemka/hackertube-roku-app/releases/latest) and download **`hackertube-roku-catalog-build-4.zip`**. Don't download the `-source.zip` or GitHub's automatically generated **Source code (zip)** file for installation.
+2. **Set up Roku Developer Mode.** On your Roku remote, press **Home** 3 times, **Up** 2 times, then **Right, Left, Right, Left, Right**.
+3. **Enable the installer.** Follow the instructions on the TV, accept the agreement, and create a developer password. Your Roku will restart. Write down the **URL/IP address shown on the TV** (for example, `http://192.168.1.100`).
+4. **Open that URL on your computer.** Sign in with username **`rokudev`** and the developer password you just set. Make sure the computer and Roku are on the same network.
+5. **Sideload HackerTube.** In the **Development Application Installer**, choose **Upload**, select `hackertube-roku-catalog-build-4.zip`, and click **Install**.
 
-```sh
-npm ci
-npx bsc --project bsconfig.json
+HackerTube should open on your TV and appear on your Roku home screen. To update it, repeat steps 1, 4, and 5 with a newer ZIP.
+
+Roku supports one sideloaded developer app at a time; installing this replaces any existing sideloaded app. Some YouTube videos may be unavailable or fail to play. Playback requires internet access and relies on YouTube and Playlet's support service.
+
+## Browse and watch
+
+- Use the top menu for **Search**, **Topics**, **Sort**, and **About**. Press **OK** to apply a highlighted choice; **Back** cancels a menu.
+- Press **Down** to enter the video grid. Keep pressing Down to scroll and automatically load more videos. Press **OK** to play.
+- Press **Back** from the grid, or **Up** from the first row, to return to the menu. Back during playback exits the video.
+- Use the player's playback and seek controls to pause, resume, fast-forward, and rewind.
+- **Top recommended** is the default ranking. **Recently recommended on HN** uses the latest recommendation year, not the video's upload date. **Title A–Z** sorts alphabetically. Sorting preserves the selected topic and search.
+
+This version uses a bundled catalog snapshot and keyword search. It does not include accounts, personalized recommendations, saved lists, or automatic catalog updates.
+
+## Credits
+
+[**HackerTube**](https://hackertube.org/about) credits [Andrej Karpathy](https://github.com/karpathy) with prompting its creation. It collects YouTube videos recommended across years of Hacker News discussions. This Roku app uses HackerTube's publicly released catalog, which draws on the [open-index/hacker-news](https://huggingface.co/datasets/open-index/hacker-news) archive. Thanks for making the catalog reusable.
+
+[**Playlet**](https://github.com/iBicha/playlet), created by [iBicha](https://github.com/iBicha), provides the Roku YouTube playback foundation on which this app is built. The Playlet-derived source and upstream notices are included in [`vendor/playlet/`](vendor/playlet/). Credit to Playlet's contributors for making a Roku YouTube client available as open source.
+
+This is an independent project, not an official app from HackerTube, Karpathy, Playlet, YouTube, or Roku. See [ATTRIBUTION.md](ATTRIBUTION.md) for additional credits.
+
+## License
+
+The distributed catalog app is licensed under **[GNU AGPL-3.0](LICENSE)**. The root license and package metadata identify the catalog app accordingly; upstream Playlet notices are preserved.
+
+- **Catalog app and Playlet-derived code:** AGPL-3.0. Releases include the corresponding modified source and build scripts.
+- **HackerTube catalog data:** [ODC-By 1.0](https://opendatacommons.org/licenses/by/1-0/), with attribution to HackerTube and the source archive.
+- **Independent original diagnostic prototype:** retains its [MIT license](LICENSES/MIT.txt). It is separate from the distributed catalog app.
+
+See [LICENSING.md](LICENSING.md) for exact scope and exceptions. These licenses do not grant rights to underlying YouTube videos or HackerTube branding.
+
+## Build from source
+
+You'll need **Node.js 22**, **npm**, **Python 3.10+**, and **Bash**. The build installs its locked npm dependencies when needed.
+
+```bash
+git clone https://github.com/piyushkhemka/hackertube-roku-app.git
+cd hackertube-roku-app
+bash tools/build_catalog_app.sh
+```
+
+Upload `dist/hackertube-roku-catalog-build-4.zip` using the steps above. The build also produces `dist/hackertube-roku-catalog-build-4-source.zip` and SHA-256 checksum files. The installer ZIP has `manifest` at its root and includes the playback library.
+
+To reproduce a release, check out its tag before building. You can also extract the release's matching `-source.zip` and run the same build command from its root.
+
+The build checks compilation, XML, asset references, catalog integrity, and ZIP structure. Run Python tests with:
+
+```bash
 python3 -m unittest discover -s tests -v
-python3 tools/package.py
 ```
 
-Output: `dist/hackertube-roku-m0.zip` and its SHA-256 checksum. The ZIP has the
-Roku manifest at its root. It is a developer sideload ZIP, not a signed `.pkg`.
-Builds with identical source and sample URL produce identical ZIP bytes.
-
-## Run the original test clip
-
-```sh
-sh tools/make_diagnostic.sh
-python3 tools/serve_diagnostic.py --bind 0.0.0.0 --port 8080
-```
-
-Keep that terminal running. Find your Mac's LAN IP in System Settings → Network.
-In another terminal, replacing `YOUR-MAC-IP`:
-
-```sh
-python3 tools/package.py --sample-url http://YOUR-MAC-IP:8080/diagnostic.mp4
-```
-
-Do not use localhost: on Roku it means the Roku itself. The generated clip is an
-original test pattern with a 440 Hz tone. Turn the TV volume down before testing.
-No network service is necessary for the default diagnostic menu; actual playback
-requires the configured server. Stop the server with Ctrl-C when finished.
-
-## Sideload
-
-1. Put the Roku and Mac on the same LAN. Enable Roku developer mode with
-   **Home ×3, Up ×2, Right, Left, Right, Left, Right**.
-2. Follow the TV instructions, record the Roku IP, set a developer password,
-   and reboot as directed.
-3. On your Mac, visit `http://ROKU-IP`. Log in as `rokudev` with that password.
-4. Upload `dist/hackertube-roku-m0.zip` using the Development Application Installer.
-5. Press OK to start the diagnostic. During playback, OK or Play/Pause pauses/resumes. Left/Rewind and Right/Fast-forward use the native
-   player seek controls. Back stops it;
-   Back again exits. Record results in the feasibility report.
-
-Only one sideloaded developer app is supported; installing replaces the previous
-one. To update or roll back, upload the desired saved ZIP again. Registry
-retention across reinstalls is not assumed (this spike stores no user data).
-
-If the installer is unreachable, recheck the Roku IP after reboot and ensure
-both devices share a LAN without client isolation or VPN interference. If login
-fails, use the password set on the Roku. If installation reports a manifest
-error, rebuild with the command above rather than zipping the parent folder.
-For playback errors check the Mac IP, running server and firewall. Inspect the
-Roku debug console on device port 8085 for `DIAGNOSTIC` state/error messages.
-Installation and basic video playback were confirmed by the owner; remaining
-device checks are tracked in docs/TEST_PLAN.md.
-
-## Scope
-
-The full planned product includes all videos, topics, search, details, favorites
-and Watch Later. The owner chose to stop after the playback prototype;
-full browser and phone-to-YouTube fallback development are not approved. Neither a catalog entry nor a handoff proves a video is playable
-or watched. No YouTube extraction, media proxy, API credentials, analytics or
-undocumented cross-app launch is included.
-
-The official export is downloaded to ignored `data/hackertube-data.zip` for schema
-inspection. See [attribution](ATTRIBUTION.md). Code is MIT licensed; dataset terms
-are separate.
+See [build 4 notes](docs/CATALOG_BUILD_4.md) for the navigation fixes and test details. The independent diagnostic prototype remains in `roku/`; it is not the app ZIP linked above.

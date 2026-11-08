@@ -7,7 +7,7 @@
     "test": "npm run check && python3 -m unittest discover -s tests -v",
     "build": "python3 tools/package.py"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
     "brighterscript": "0.73.8"
   },

@@ -1,4 +1,4 @@
-name: Validate prototype
+name: Validate Roku apps
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
@@ -17,7 +17,19 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - name: Build and validate catalog app
+        run: bash tools/build_catalog_app.sh
+      - name: Test compiled catalog navigation and filtering
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes --package @rokucommunity/brs@0.47.6 brs -r vendor/playlet/build/playlet-lib tests/catalog_navigation.brs vendor/playlet/build/playlet-lib/components/Screens/HomeScreen/HomeScreen.brs | tee /tmp/navigation.log
+          grep -q '^PASS:' /tmp/navigation.log
+          ! grep -q '^FAIL' /tmp/navigation.log
+          npx --yes --package @rokucommunity/brs@0.47.6 brs -r vendor/playlet/build/playlet-lib tests/catalog_filter.brs vendor/playlet/build/playlet-lib/components/HackerTube/HackerTubeCatalogTask.brs | tee /tmp/filter.log
+          grep -q '^PASS:' /tmp/filter.log
+          ! grep -q '^FAIL' /tmp/filter.log
       - uses: actions/upload-artifact@v4
         with:
-          name: hackertube-roku-m0-unverified
+          name: hackertube-roku-builds
           path: dist/*

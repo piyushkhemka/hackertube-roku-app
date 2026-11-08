@@ -37,7 +37,7 @@ import xml.etree.ElementTree as ET
 
 root = Path(sys.argv[1])
 vendor = root / 'vendor/playlet'
-artifact = root / 'dist/hackertube-roku-catalog-build-2.zip'
+artifact = root / 'dist/hackertube-roku-catalog-build-4.zip'
 shutil.copyfile(vendor / 'dist/playlet-app.zip', artifact)
 with zipfile.ZipFile(artifact) as app:
     assert app.testzip() is None, 'App ZIP CRC failure'
@@ -73,7 +73,7 @@ with zipfile.ZipFile(artifact) as app:
             ET.fromstring(app.read(name))
 
 # Supply the exact corresponding derivative source, without dependencies/build output.
-source = root / 'dist/hackertube-roku-catalog-build-2-source.zip'
+source = root / 'dist/hackertube-roku-catalog-build-4-source.zip'
 excluded = {'.git', 'node_modules', 'build', 'dist', 'release', '__pycache__'}
 with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as archive:
     for path in sorted(vendor.rglob('*')):
@@ -83,7 +83,13 @@ with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as archive:
         if rel.as_posix() == 'playlet-app/src/lib/playlet-lib.zip' or path.name == '.DS_Store':
             continue
         archive.write(path, 'vendor/playlet/' + rel.as_posix())
-    archive.write(root / 'tools/build_catalog_app.sh', 'tools/build_catalog_app.sh')
+    # Include root build inputs, original license exceptions and verification sources.
+    for directory in ('tools', 'tests', 'docs', 'LICENSES'):
+        for path in sorted((root / directory).rglob('*')):
+            if path.is_file() and not path.is_symlink() and not excluded.intersection(path.relative_to(root).parts):
+                archive.write(path, path.relative_to(root).as_posix())
+    for name in ('README.md', 'LICENSE', 'LICENSING.md', 'ATTRIBUTION.md'):
+        archive.write(root / name, name)
 for path in (artifact, source):
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     path.with_suffix('.zip.sha256').write_text(f'{digest}  {path.name}\n')
