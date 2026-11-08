@@ -18,7 +18,7 @@ You need a Roku TV or Roku streaming device and a computer on the same local net
 4. **Open that URL on your computer.** Sign in with username **`rokudev`** and the developer password you just set. Make sure the computer and Roku are on the same network.
 5. **Sideload HackerTube.** In the **Development Application Installer**, choose **Upload**, select `build.zip`, and click **Install**.
 
-<img width="1454" height="781" alt="Screenshot 2026-11-08 at 2 54 08 AM" src="https://github.com/user-attachments/assets/7bb92771-2686-4671-b244-4e18feaad6fc" />
+<img width="1454" height="781" alt="Screenshot 2026-11-08 at 2 54 08 AM" src="https://github.com/user-attachments/assets/fa2c0f76-f389-4922-9b58-6f7c7ca8ea00" />
 
 
 HackerTube should open on your TV and appear on your Roku home screen. To update it, repeat steps 1, 4, and 5 with a newer ZIP.
